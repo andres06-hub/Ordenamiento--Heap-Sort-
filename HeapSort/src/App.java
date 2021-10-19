@@ -5,74 +5,148 @@ import javax.swing.JOptionPane;
 
 public class App {
     
-    // Variables globales
-    static long inicio, fin, hora, minutos, segundos, milisegundos;
-    static int horaTotal, minutosTotal, segundosTotal;
     
     public static void main(String[] args) throws Exception {
-
+        
         
         iniciar();
     }
     
 
-    
+
     public static void iniciar(){
         
+        // Variables globales
+        long inicio, fin, hora, minutos, segundos, milisegundos;
+        int horaTotal, minutosTotal, segundosTotal;
+
         // Rangos de numeros a generar
         double valorMenor = -1000;
         double valorMayor = 999;
-        // Llamamos nuestras funciones 
+
+
+        // Se declara variables
+        String nombreUsuario = "Default";
+        int cantidadNumeros = 0;
+
+        // Numeros generados
+        ArrayList<Double> numerosGene = new ArrayList<>();
+
         
-        
+        // Arraylist que permite guardar los datos leidos 
+        ArrayList<Double> numerosLeidos = new ArrayList<>();
+
+        // ArrayList con los datos ordenados que obtibimos anteriorente
+        // Head Sort
+        ArrayList<Double> numerosOrdenados = new ArrayList<>();
         
         /**
          * For para calcularme el tiempo por cada 
          * funcionamiento del programa
          */
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
+            
+            // Se declaran las variables
+            hora = 3600000;
+            minutos = 60000;
+            segundos = 1000;
+
+            // Las variables para saber cuanto duro en total
+            horaTotal = 0;
+            minutosTotal = 0;
+            segundosTotal = 0;
+            
+            //Se declara el switch para poder tener un control del tiempó
+            // 
+
+            inicio = System.currentTimeMillis();
+
+            switch (i) {
+                case 0:
+                // Se estima el tiempo 
+                    nombreUsuario = getUsuario();
+                    cantidadNumeros = cantidadDatosDesee();
+
+                    break;
+
+                case 1:
+                    // Generar numeros aleatorios
+                    numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
+
+                    break;
+                    
+                case 2:    
+                    // Metodo de ArrayList
+                    // Escribir en un archivo
+                    FileWhrite(numerosGene, nombreUsuario);
+
+                    break;
+
+                case 3:
+                    // Leer archivo creado anteriormente
+                    readerFile(cantidadNumeros, numerosLeidos);
+
+                    break;
+
+                case 4:
+                    // Ordenamiento de datos en la estructura de datos
+                    // De menor a mayor
+
+
+
+                    break;
+                default:
+                    break;
+            } 
             
             
+            fin = System.currentTimeMillis();    
+
+            // Se captura el tiempo en milisegundos 
+            milisegundos = fin - inicio;
+        
+            if (milisegundos >= hora) {
+                while (milisegundos >= hora){
+                    horaTotal += 1;
+                    milisegundos -= 3600000;    
+                }    
+            }
+            if (milisegundos >= minutos) {
+                while (milisegundos >= minutos) {
+                    minutosTotal +=1;
+                    milisegundos -= 600000;
+                }
+            }
+            if (milisegundos >= segundos) {
+                while (milisegundos >= segundos) {
+                    segundosTotal +=1;
+                    milisegundos -= 1000;
+                }
+            }
+
             
+            System.out.println("#################################################");
+            System.out.println((i)+" ) "+horaTotal+"/"+minutosTotal+"/"+segundosTotal+"/"+milisegundos);
             
-            
-            
-            
-            
-            
+
         }
 
-        String nombreUsuario = getUsuario();
-        int cantidadNumeros = cantidadDatosDesee();
+
         
-        inicio = System.currentTimeMillis();
-        // Metodo de ArrayList
-        ArrayList<Double> numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
-
-        FileWhrite(numerosGene, nombreUsuario);
-        
-        /**Arreglo para guardar los datos leidos */        
-        ArrayList<Double> numerosLeidos = new ArrayList<>();
-        
-        // Leer archivo
-        readerFile(cantidadNumeros, numerosLeidos);
-
-
-        fin = System.currentTimeMillis();
-
         // Conversion de nanosegundo a segundos
         // double diferencia = (double) (fin - inicio) * 1.0e-9;
-
+        
         // System.out.print("segundos "+diferencia+" s");
 
+        
         System.out.println(numerosLeidos);
         
-        
+        System.out.println("Ordenados"+numerosOrdenados);
         // Se vacia el arreglo
         numerosLeidos.clear();
+        System.out.println(numerosLeidos);
     }
-
 
 
 
@@ -105,7 +179,7 @@ public class App {
             // Agregamos cada nuemero aleatorio a la lista
             // listaTemporal.add(aleatorio);
             listaTemporal.add(numRedondeado);
-            System.out.println(numRedondeado);
+            // System.out.println(numRedondeado);
         }
         return listaTemporal;
     }
