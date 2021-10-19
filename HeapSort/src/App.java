@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class App {
-
+    
+    // Variables globales
+    static long inicio, fin, hora, minutos, segundos, milisegundos;
+    static int horaTotal, minutosTotal, segundosTotal;
     
     public static void main(String[] args) throws Exception {
+
         
         iniciar();
-        
     }
+    
+
     
     public static void iniciar(){
         
@@ -18,24 +23,64 @@ public class App {
         double valorMenor = -1000;
         double valorMayor = 999;
         // Llamamos nuestras funciones 
+        
+        
+        
+        /**
+         * For para calcularme el tiempo por cada 
+         * funcionamiento del programa
+         */
 
-         
-
-
+        for (int i = 0; i < 4; i++) {
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }
 
         String nombreUsuario = getUsuario();
-        double cantidadNumeros = cantidadDatosDesee();
+        int cantidadNumeros = cantidadDatosDesee();
+        
+        inicio = System.currentTimeMillis();
         // Metodo de ArrayList
         ArrayList<Double> numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
 
         FileWhrite(numerosGene, nombreUsuario);
+        
+        /**Arreglo para guardar los datos leidos */        
+        ArrayList<Double> numerosLeidos = new ArrayList<>();
+        
+        // Leer archivo
+        readerFile(cantidadNumeros, numerosLeidos);
+
+
+        fin = System.currentTimeMillis();
+
+        // Conversion de nanosegundo a segundos
+        // double diferencia = (double) (fin - inicio) * 1.0e-9;
+
+        // System.out.print("segundos "+diferencia+" s");
+
+        System.out.println(numerosLeidos);
+        
+        
+        // Se vacia el arreglo
+        numerosLeidos.clear();
     }
 
+
+
+
     // Funcion que pide cuantos datos requiere el usuario
-    public static double cantidadDatosDesee(){
+    public static int cantidadDatosDesee(){
         // Se le pide cuantos datos requiere el usuario
         // Cuantos numeros requeire en aleatorio
-        double date = Double.parseDouble(JOptionPane.showInputDialog(null, "¿Cuantos datos desea?"));
+        int date = Integer.parseInt(JOptionPane.showInputDialog(null, "¿Cuantos datos desea?"));
         return date;
     }
 
@@ -120,11 +165,12 @@ public class App {
                  * 
                  */
                 linea.println("Longitud de elementos creados : " + numerosGene.size() + "\n");
-                int i = 0;
+                // int i = 0;
                 for (Double numAleatorio : numerosGene) {
 
-                    linea.println((i + 1) + " ) " + numAleatorio);
-                    i += 1;
+                    // linea.println((i + 1) + " ) " + numAleatorio);
+                    // i += 1;
+                    linea.println(numAleatorio);
                 }
 
                 linea.println("--------------------------------------");
@@ -137,10 +183,17 @@ public class App {
             }
             
         }else{
-            // Si el archivo ya esta creado
+            
+            // Eliminamos el Archivo existente
+            archivo.delete();
+
             // tratamos de hacer esto
             try {
-               
+
+                // Creamos un archivo nuevo si un archivo  no existe
+                archivo.createNewFile();
+
+
                 // Creamos la istancia de escribir 
                 // Le pasamos archivo ya que sera donde se escribira
                 /**
@@ -158,27 +211,69 @@ public class App {
                 // Escribimos en el archivo con:
                 linea.println("###################################");
                 linea.println("Autor : " + nombreUsuario);
-                // Se obyengo la cantidad de los numeros generados
-                linea.println("Longitud de elementos creados : " + numerosGene.size() + "\n");
+                // linea.println("###################################");
+
                 /**
+                 * Se pasa por cada uno de los datos guardados en el arreglo
                  * 
                  */
-                int i = 0;
+                linea.println("Longitud de elementos creados : " + numerosGene.size() + "\n");
+                // int i = 0;
                 for (Double numAleatorio : numerosGene) {
 
-                    linea.println((i + 1) + ") " + numAleatorio);
-                    i += 1;
+                    // linea.println((i + 1) + " ) " + numAleatorio);
+                    // i += 1;
+                    linea.println(numAleatorio);
                 }
 
-                linea.println("----------------------------");
+                linea.println("--------------------------------------");
                 // Cerramos la escritura en linea
                 linea.close();
                 escribir.close();
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
 
             }
         } 
+    }
+
+
+    // Leer los datos del archivo
+    public static void readerFile(int cantidadNumeros, ArrayList<Double> numerosLeidos){
+
+        // El archivo de texto que ya esta creado 
+        File archivo;
+        // leer el archivo creado
+        FileReader leer;
+        // En donde se almacena la nlinea del archivo, el dato que contiene la linea
+        BufferedReader almacenaLinea;
+        // se crea variable p'ara guardar el dato obtenido
+        String dato;
+
+        // Se crea la intancia para poder acceder al archivo de txt
+        archivo = new File("usuarioNumeros.txt");
+
+        try {
+            // Intanciamos la variable leer
+            leer = new FileReader(archivo);
+            // Se intsacia la variabale para poder pasar por cada linea
+            almacenaLinea = new BufferedReader(leer);
+
+            for (int i = 0; i < (cantidadNumeros + 4); i++) {
+
+                try {
+
+                    dato = almacenaLinea.readLine();
+                    //  Se pasa el dato al ArrayList
+                    numerosLeidos.add(Double.parseDouble(dato));
+                    
+                } catch (Exception e) {
+                    //TODO: handle exception
+                }
+            }     
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
     }
 }
