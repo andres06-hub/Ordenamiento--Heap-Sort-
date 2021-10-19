@@ -19,12 +19,17 @@ public class App {
         double valorMayor = 999;
         // Llamamos nuestras funciones 
 
+         
+
+
+
         String nombreUsuario = getUsuario();
         double cantidadNumeros = cantidadDatosDesee();
+        // Metodo de ArrayList
+        ArrayList<Double> numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
 
-        FileWhrite(cantidadNumeros, valorMayor, valorMenor, nombreUsuario);
+        FileWhrite(numerosGene, nombreUsuario);
     }
-
 
     // Funcion que pide cuantos datos requiere el usuario
     public static double cantidadDatosDesee(){
@@ -41,21 +46,28 @@ public class App {
         return nombre;
     }
 
-    // Metodo en donde generamos los n numeros en aleatorio
-    // los almacenamos en un archivo
-    public static void FileWhrite(double cantidadNumeros, double valorMayor, double valorMenor, String nombreUsuario){
+    // Se crea metodo para generar los numeros y guardarlos en un ArrayList()
+    public static ArrayList<Double> generarNumero(double cantidadNumeros, double valorMayor, double valorMenor) {
 
         ArrayList<Double> listaTemporal = new ArrayList<>();
 
-        // Obtenemos el valor 
+        // Obtenemos el valor
         for (int i = 0; i < cantidadNumeros; i++) {
             double aleatorio = (Math.random() * (valorMayor - valorMenor) + valorMenor);
+
+            // Se redondea el numero aleatorio que se genera con el isguiente codigo
+            double numRedondeado = Math.round(aleatorio * 100.0) / 100.0;
             // Agregamos cada nuemero aleatorio a la lista
-            listaTemporal.add(aleatorio);
+            // listaTemporal.add(aleatorio);
+            listaTemporal.add(numRedondeado);
+            System.out.println(numRedondeado);
         }
-        System.out.println(listaTemporal);
+        return listaTemporal;
+    }
 
-
+    // Metodo en donde generamos los n numeros en aleatorio
+    // los almacenamos en un archivo
+    public static void FileWhrite(ArrayList<Double> numerosGene, String nombreUsuario){
 
         // ##################################
         // Este es para manipular al archivio
@@ -99,16 +111,29 @@ public class App {
                 linea = new PrintWriter(escribir);
                 
                 // Escribimos en el archivo con:
-                linea.println(nombreUsuario);
-                linea.println(listaTemporal);
-                linea.println("----------------------------");
+                linea.println("###################################");
+                linea.println("Autor : " + nombreUsuario);
+                // linea.println("###################################");
+
+                /**
+                 * Se pasa por cada uno de los datos guardados en el arreglo
+                 * 
+                 */
+                linea.println("Longitud de elementos creados : " + numerosGene.size() + "\n");
+                int i = 0;
+                for (Double numAleatorio : numerosGene) {
+
+                    linea.println((i + 1) + " ) " + numAleatorio);
+                    i += 1;
+                }
+
+                linea.println("--------------------------------------");
                 // Cerramos la escritura en linea
                 linea.close();
                 escribir.close();
-                
-                
+
             } catch (Exception e) {
-                
+
             }
             
         }else{
@@ -131,17 +156,29 @@ public class App {
                 linea = new PrintWriter(escribir);
                 
                 // Escribimos en el archivo con:
-                linea.println(nombreUsuario);
-                linea.println(listaTemporal);
+                linea.println("###################################");
+                linea.println("Autor : " + nombreUsuario);
+                // Se obyengo la cantidad de los numeros generados
+                linea.println("Longitud de elementos creados : " + numerosGene.size() + "\n");
+                /**
+                 * 
+                 */
+                int i = 0;
+                for (Double numAleatorio : numerosGene) {
+
+                    linea.println((i + 1) + ") " + numAleatorio);
+                    i += 1;
+                }
+
                 linea.println("----------------------------");
                 // Cerramos la escritura en linea
                 linea.close();
                 escribir.close();
-                
-                
+
             } catch (Exception e) {
-                
+                JOptionPane.showMessageDialog(null, e);
+
             }
-        }
+        } 
     }
 }
