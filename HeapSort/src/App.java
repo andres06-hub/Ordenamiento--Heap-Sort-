@@ -5,11 +5,61 @@ import javax.swing.JOptionPane;
 
 public class App {
     
-    
+    static String separador = "------------------------------------------------------";
+
+    static long hora = 3600000;
+    static long minutos = 60000;
+    static long segundos = 1000;    
+
+
     public static void main(String[] args) throws Exception {
-        
-        
+
+
+        // Variables para calcular el tiempo de todo el programa
+        int horaGlobal, minutosGlobal, segundosGlobal;
+        long milisegundosTiempoGlobal;
+
+        horaGlobal = 0;
+        minutosGlobal = 0;
+        segundosGlobal = 0;
+
+
+        long inicioTiempoGlobal = System.currentTimeMillis();
+
+        // ##########################################################################################
+        System.out.print(separador);
+        System.out.println("\n\tEl tiempo se estima de la sigiente forma\n\t\tHH/MM/SS/ML\n");
         iniciar();
+        
+        // ##########################################################################################
+
+        long finTiempoGlobal = System.currentTimeMillis();
+
+        milisegundosTiempoGlobal = finTiempoGlobal - inicioTiempoGlobal;
+
+        // Se captura el tiempo en milisegundos 
+        if (milisegundosTiempoGlobal >= hora) {
+                while (milisegundosTiempoGlobal >= hora){
+                    horaGlobal+= 1;
+                    milisegundosTiempoGlobal -= 3600000;    
+                }    
+            }
+            if (milisegundosTiempoGlobal >= minutos) {
+                while (milisegundosTiempoGlobal >= minutos) {
+                    minutosGlobal +=1;
+                    milisegundosTiempoGlobal -= 600000;
+                }
+            }
+            if (milisegundosTiempoGlobal >= segundos) {
+                while (milisegundosTiempoGlobal >= segundos) {
+                    segundosGlobal +=1;
+                    milisegundosTiempoGlobal -= 1000;
+                }
+            }
+
+        System.out.println("TIEMPO DEL PROGRAMA:");
+        System.out.println(horaGlobal+"/"+minutosGlobal+"/"+segundosGlobal+"/"+milisegundosTiempoGlobal);
+
     }
     
 
@@ -17,7 +67,7 @@ public class App {
     public static void iniciar(){
         
         // Variables globales
-        long inicio, fin, hora, minutos, segundos, milisegundos;
+        long inicio, fin, milisegundos;
         int horaTotal, minutosTotal, segundosTotal;
 
         // Rangos de numeros a generar
@@ -45,12 +95,12 @@ public class App {
          * funcionamiento del programa
          */
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 6; i++) {
             
             // Se declaran las variables
-            hora = 3600000;
-            minutos = 60000;
-            segundos = 1000;
+            // hora = 3600000;
+            // minutos = 60000;
+            // segundos = 1000;
 
             // Las variables para saber cuanto duro en total
             horaTotal = 0;
@@ -63,35 +113,37 @@ public class App {
             inicio = System.currentTimeMillis();
 
             switch (i) {
-                case 0:
+                case 1:
                 // Se estima el tiempo 
+                // Pidiendo los datos al usuario
                     nombreUsuario = getUsuario();
                     cantidadNumeros = cantidadDatosDesee();
 
                     break;
 
-                case 1:
+                case 2:
                     // Generar numeros aleatorios
                     numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
 
                     break;
                     
-                case 2:    
+                case 3:    
                     // Metodo de ArrayList
                     // Escribir en un archivo
                     FileWhrite(numerosGene, nombreUsuario);
 
                     break;
 
-                case 3:
+                case 4:
                     // Leer archivo creado anteriormente
                     readerFile(cantidadNumeros, numerosLeidos);
 
                     break;
 
-                case 4:
+                case 5:
                     // Ordenamiento de datos en la estructura de datos
                     // De menor a mayor
+                    // Heap sort    
 
 
 
