@@ -114,8 +114,24 @@ public class App {
                 case 1:
                 // Se estima el tiempo 
                 // Pidiendo los datos al usuario
-                    nombreUsuario = getUsuario();
-                    cantidadNumeros = cantidadDatosDesee();
+
+                    String respuesta = "";
+
+                    try {
+                        nombreUsuario = getUsuario();
+                    } catch (Exception e) {
+                        respuesta = "\tXXXX ERROR XXXX";
+                    }
+
+                    try {
+                        cantidadNumeros = cantidadDatosDesee();
+                    } catch (NumberFormatException e) {
+                        respuesta="\t\tXXXXX ERROR XXXXX\nSe han introducido caracteres no numéricos";
+                        System.out.println(respuesta);
+                        break;
+                    }
+
+
                     System.out.println("Ingreso de datos");
 
                     break;
