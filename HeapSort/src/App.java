@@ -1,16 +1,14 @@
 import java.io.*;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
+
 
 public class App {
     
     static String separador = "------------------------------------------------------";
-
     static long hora = 3600000;
     static long minutos = 60000;
     static long segundos = 1000;    
-
 
     public static void main(String[] args) throws Exception {
 
@@ -28,6 +26,7 @@ public class App {
 
         // ##########################################################################################
         System.out.print(separador);
+        System.out.println("\n\tBienvenido al programa de ordenamiento\n\t\tHEAD SORT");
         System.out.println("\n\tEl tiempo se estima de la sigiente forma\n\t\tHH/MM/SS/ML\n");
         iniciar();
         
@@ -59,11 +58,8 @@ public class App {
 
         System.out.println("TIEMPO DEL PROGRAMA:");
         System.out.println(horaGlobal+"/"+minutosGlobal+"/"+segundosGlobal+"/"+milisegundosTiempoGlobal);
-
     }
     
-
-
     public static void iniciar(){
         
         // Variables globales
@@ -79,18 +75,20 @@ public class App {
         String nombreUsuario = "Default";
         int cantidadNumeros = 0;
 
-        // Numeros generados
+        // Numeros generados, donde se guardan cuando se generan
         ArrayList<Double> numerosGene = new ArrayList<>();
 
-        
         // Arraylist que permite guardar los datos leidos 
+        // En donde se guardan los datos depues de leerlos del file
         ArrayList<Double> numerosLeidos = new ArrayList<>();
 
-        // ArrayList con los datos ordenados que obtibimos anteriorente
+        // ArrayList con los datos ordenados que obtuvimos anteriorente
         // Head Sort
-        ArrayList<Double> numerosOrdenados = new ArrayList<>();
+        // ArrayList<Double> numerosOrdenados = new ArrayList<>();
         
+
         /**
+         * 
          * For para calcularme el tiempo por cada 
          * funcionamiento del programa
          */
@@ -118,12 +116,14 @@ public class App {
                 // Pidiendo los datos al usuario
                     nombreUsuario = getUsuario();
                     cantidadNumeros = cantidadDatosDesee();
+                    System.out.println("Ingreso de datos");
 
                     break;
 
                 case 2:
                     // Generar numeros aleatorios
                     numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
+                    System.out.println("Numeros Generados - "+numerosGene);
 
                     break;
                     
@@ -131,23 +131,39 @@ public class App {
                     // Metodo de ArrayList
                     // Escribir en un archivo
                     FileWhrite(numerosGene, nombreUsuario);
+                    System.out.println("Escribir Archivo en txt");
 
                     break;
 
                 case 4:
                     // Leer archivo creado anteriormente
                     readerFile(cantidadNumeros, numerosLeidos);
+                    System.out.println("Leer Archivo txt");
 
                     break;
 
                 case 5:
                     // Ordenamiento de datos en la estructura de datos
                     // De menor a mayor
-                    // Heap sort    
-
-
-
+                    // Heap sort 
+                                                
+                    /**Se crea un array para pasar los datos leidos que se almacenaron
+                     * en el Arraylist y pasarlo a Array
+                     */
+                    double[] ArrayListNum = new double[numerosLeidos.size()];     
+                    for (int j = 0; j < numerosLeidos.size(); j++) {
+                        ArrayListNum[j] = numerosLeidos.get(j); 
+                    }
+                      
+                    // int longitud = ArrayListNum.length;
+                    App proceso = new App();
+                    // proceso.sort(ArrayListNum);
+                    proceso.sort(ArrayListNum);
+                    // System.out.println("Sorted array is");
+                    printArray(ArrayListNum);
+                    
                     break;
+
                 default:
                     break;
             } 
@@ -177,14 +193,9 @@ public class App {
                 }
             }
 
-            
-            System.out.println("#################################################");
             System.out.println((i)+" ) "+horaTotal+"/"+minutosTotal+"/"+segundosTotal+"/"+milisegundos);
-            
-
+            System.out.println("#################################################");
         }
-
-
         
         // Conversion de nanosegundo a segundos
         // double diferencia = (double) (fin - inicio) * 1.0e-9;
@@ -192,14 +203,84 @@ public class App {
         // System.out.print("segundos "+diferencia+" s");
 
         
-        System.out.println(numerosLeidos);
+        // System.out.println(numerosLeidos);
         
-        System.out.println("Ordenados"+numerosOrdenados);
+        // System.out.println("Ordenados"+numerosOrdenados);
+        // System.out.println("\n"+numerosLeidos);
+        // System.out.println(numerosGene);
         // Se vacia el arreglo
         numerosLeidos.clear();
         System.out.println(numerosLeidos);
     }
 
+    // #####################################################################3
+    // #####################################################################3
+    /**
+     * Metodos para la ordenacion de datos del Arraylist[]
+     */
+
+
+	public void sort(double arrNum[]){
+
+
+		int longitud = arrNum.length;
+
+		// Construir monticulo (reorganizar la matriz - estructura de datos)
+		for (int i = longitud / 2 - 1; i >= 0; i--)
+			heapify(arrNum, longitud, i);
+
+		// Uno por uno extrae un elemento del montón
+		for (int i = longitud - 1; i > 0; i--) {
+			// Mover la raíz actual al final
+			double temporal = arrNum[0];
+			arrNum[0] = arrNum[i];
+			arrNum[i] = temporal;
+
+			// llamar a max heapify en el montón reducido
+			heapify(arrNum, i, 0);
+		}
+	}
+
+	// Para apilar un subárbol enraizado con el nodo i que es un índice en arr [].
+    // n es el tamaño del montón
+	public static void heapify(double arr[], int n, int i)
+	{
+		int largest = i; // Inicializar el padre como raíz (EL mas grande)
+		int izquierdo = 2 * i + 1; // Izquierdo = 2*i + 1
+		int derecho = 2 * i + 2; // Derecho = 2*i + 2
+
+		// Si el Hijo izquierdo es más grande que el padre
+		if (izquierdo < n && arr[izquierdo] > arr[largest])
+			largest = izquierdo;
+
+		// Si el hijo correcto es más grande que el padre hasta ahora
+		if (derecho < n && arr[derecho] > arr[largest])
+			largest = derecho;
+
+		// Si la más grande no es raíz en numero
+		if (largest != i) {
+			double intercambio = arr[i];
+			arr[i] = arr[largest];
+			arr[largest] = intercambio;
+
+			// Hacemos recursividad en el arbol afectado 
+			heapify(arr, n, largest);
+		}
+	}
+
+	/* Se declara función de utilidad para imprimir la los datos de tamaño n */
+	public static void printArray(double arr[]){
+        System.out.print("Numeros ordenados [");
+		int n = arr.length;
+		for (int i = 0; i < n; ++i){
+            System.out.print(arr[i] + ", "); 
+        }
+		System.out.println("]");
+	}
+
+
+    // ####################################################################################################
+    // ####################################################################################################
 
 
     // Funcion que pide cuantos datos requiere el usuario
