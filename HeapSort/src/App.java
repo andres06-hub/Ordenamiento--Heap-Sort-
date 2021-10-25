@@ -130,16 +130,21 @@ public class App {
                         System.out.println(respuesta);
                         break;
                     }
-
-
+                    
+                    
                     System.out.println("Ingreso de datos");
-
+                    
                     break;
-
-                case 2:
+                    
+                    case 2:
                     // Generar numeros aleatorios
-                    numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
-                    System.out.println("Numeros Generados - "+numerosGene);
+                    try {
+                        numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
+                        System.out.println("Numeros Generados - "+numerosGene);    
+                    } catch (NumberFormatException e) {
+                        respuesta="\t\tXXXXX ERROR XXXXX\nSe han introducido caracteres no numéricos";
+                        System.out.println(respuesta);
+                    }
 
                     break;
                     
@@ -225,12 +230,13 @@ public class App {
         // System.out.println("\n"+numerosLeidos);
         // System.out.println(numerosGene);
         // Se vacia el arreglo
+        System.out.println("CANTIDAD numeros generados :: "+numerosGene.size());
         numerosLeidos.clear();
         System.out.println(numerosLeidos);
     }
 
-    // #####################################################################3
-    // #####################################################################3
+    // #####################################################################
+    // #####################################################################
     /**
      * Metodos para la ordenacion de datos del Arraylist[]
      */
