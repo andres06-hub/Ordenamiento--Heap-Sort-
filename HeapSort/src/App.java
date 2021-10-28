@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-
 public class App {
     
     static String separador = "------------------------------------------------------";
@@ -21,41 +20,49 @@ public class App {
         minutosGlobal = 0;
         segundosGlobal = 0;
 
-
+        // Se inicia toomanado el tiempo del programa 
         long inicioTiempoGlobal = System.currentTimeMillis();
 
         // ##########################################################################################
+        // Mensaje de inicio del programa
         System.out.print(separador);
         System.out.println("\n\tBienvenido al programa de ordenamiento\n\t\tHEAD SORT");
         System.out.println("\n\tEl tiempo se estima de la sigiente forma\n\t\tHH/MM/SS/ML\n");
+        // Metodo que inicia el programa, llamamos los metodos
         iniciar();
         
         // ##########################################################################################
-
+        
+        // Finalizamos el tiempo para calcular el tiempo que toma todo el programa 
         long finTiempoGlobal = System.currentTimeMillis();
 
+        // Se hace la conversion a milisegundos con esta formula
         milisegundosTiempoGlobal = finTiempoGlobal - inicioTiempoGlobal;
 
         // Se captura el tiempo en milisegundos 
+        // Se condiciona para tomar el tiempo en horas
         if (milisegundosTiempoGlobal >= hora) {
                 while (milisegundosTiempoGlobal >= hora){
                     horaGlobal+= 1;
                     milisegundosTiempoGlobal -= 3600000;    
                 }    
             }
+            // Se verifica para tomar el tiempo en 'minutos'
             if (milisegundosTiempoGlobal >= minutos) {
                 while (milisegundosTiempoGlobal >= minutos) {
                     minutosGlobal +=1;
                     milisegundosTiempoGlobal -= 600000;
                 }
             }
+            // Se condiciona y verifica si el tiempo toma segundos
             if (milisegundosTiempoGlobal >= segundos) {
                 while (milisegundosTiempoGlobal >= segundos) {
                     segundosGlobal +=1;
                     milisegundosTiempoGlobal -= 1000;
                 }
             }
-
+        // Cada ves que se captura el tiempo imprimimos
+        // EL tiempo que le tomo al programa en "HH/MM/SS/ML"
         System.out.println("TIEMPO DEL PROGRAMA:");
         System.out.println(horaGlobal+"/"+minutosGlobal+"/"+segundosGlobal+"/"+milisegundosTiempoGlobal);
     }
@@ -63,6 +70,8 @@ public class App {
     public static void iniciar(){
         
         // Variables globales
+
+        // para llevar los datos del tiempo
         long inicio, fin, milisegundos;
         int horaTotal, minutosTotal, segundosTotal;
 
@@ -105,16 +114,17 @@ public class App {
             minutosTotal = 0;
             segundosTotal = 0;
             
-            //Se declara el switch para poder tener un control del tiempó
             // 
-
+            // Se inicia a tomar el tiempo una ves iteres por el primer indice, FORI
             inicio = System.currentTimeMillis();
-
+            
+            //Se declara el switch para poder tener un control del tiempó
             switch (i) {
                 case 1:
                 // Se estima el tiempo 
                 // Pidiendo los datos al usuario
 
+                    // Respuesta que nos dara 
                     String respuesta = "";
 
                     try {
@@ -123,17 +133,27 @@ public class App {
                         respuesta = "\tXXXX ERROR XXXX";
                     }
 
-                    try {
-                        cantidadNumeros = cantidadDatosDesee();
-                    } catch (NumberFormatException e) {
-                        respuesta="\t\tXXXXX ERROR XXXXX\nSe han introducido caracteres no numéricos";
-                        System.out.println(respuesta);
-                        break;
-                    }
-                    
-                    
+                    boolean validacion = true;
+                    do {
+                        
+                        // Se trata de hacer, verificamos si nos da un Error
+                        try {
+                            // Se lalma la funcion 
+                            cantidadNumeros = cantidadDatosDesee();
+                            // LA validacion seria se rechaza ya que si se cumple
+                            validacion = false;
+                            // Si el progrma falla
+                        } catch (NumberFormatException e) {
+                            respuesta="\t\tXXXXX ERROR XXXXX\nSe han introducido caracteres no numéricos";
+                            System.out.println(respuesta);
+                            JOptionPane.showMessageDialog(null, "\t"+respuesta);
+                            validacion = true;
+                            // break;
+                        }
+                        // Mientras sea true el ciclo se cumple
+                    } while (validacion);
+
                     System.out.println("Ingreso de datos");
-                    
                     break;
                     
                     case 2:
@@ -141,11 +161,11 @@ public class App {
                     try {
                         numerosGene = generarNumero(cantidadNumeros, valorMayor, valorMenor);
                         System.out.println("Numeros Generados - "+numerosGene);    
+                        // Si el progrma falla, si hay una excepcion
                     } catch (NumberFormatException e) {
                         respuesta="\t\tXXXXX ERROR XXXXX\nSe han introducido caracteres no numéricos";
                         System.out.println(respuesta);
                     }
-
                     break;
                     
                 case 3:    
@@ -175,21 +195,22 @@ public class App {
                     for (int j = 0; j < numerosLeidos.size(); j++) {
                         ArrayListNum[j] = numerosLeidos.get(j); 
                     }
-                      
+
+                    // Se instancia la clase y se crea un objeto de tipo App
                     // int longitud = ArrayListNum.length;
                     App proceso = new App();
                     // proceso.sort(ArrayListNum);
+                    // Llamamos la funcion de ordenamiento con un parametro
                     proceso.sort(ArrayListNum);
                     // System.out.println("Sorted array is");
                     printArray(ArrayListNum);
                     
                     break;
-
                 default:
                     break;
             } 
             
-            
+            // Se finaliza el tiempo de cada funcion que se cumpla 
             fin = System.currentTimeMillis();    
 
             // Se captura el tiempo en milisegundos 
@@ -217,20 +238,9 @@ public class App {
             System.out.println((i)+" ) "+horaTotal+"/"+minutosTotal+"/"+segundosTotal+"/"+milisegundos);
             System.out.println("#################################################");
         }
-        
-        // Conversion de nanosegundo a segundos
-        // double diferencia = (double) (fin - inicio) * 1.0e-9;
-        
-        // System.out.print("segundos "+diferencia+" s");
-
-        
-        // System.out.println(numerosLeidos);
-        
-        // System.out.println("Ordenados"+numerosOrdenados);
-        // System.out.println("\n"+numerosLeidos);
-        // System.out.println(numerosGene);
-        // Se vacia el arreglo
+        // cantidad de numeros generados
         System.out.println("CANTIDAD numeros generados :: "+numerosGene.size());
+        // Se vacia el arreglo
         numerosLeidos.clear();
         System.out.println(numerosLeidos);
     }
@@ -240,10 +250,7 @@ public class App {
     /**
      * Metodos para la ordenacion de datos del Arraylist[]
      */
-
-
 	public void sort(double arrNum[]){
-
 
 		int longitud = arrNum.length;
 
@@ -369,7 +376,6 @@ public class App {
                 // Creamos un archivo nuevo si un archivo  no existe
                 archivo.createNewFile();
 
-
                 // Creamos la istancia de escribir 
                 // Le pasamos archivo ya que sera donde se escribira
                 /**
@@ -412,8 +418,8 @@ public class App {
             }
             
         }else{
-            
             // Eliminamos el Archivo existente
+            // PAra poder reescribir en él
             archivo.delete();
 
             // tratamos de hacer esto
@@ -465,7 +471,6 @@ public class App {
             }
         } 
     }
-
 
     // Leer los datos del archivo
     public static void readerFile(int cantidadNumeros, ArrayList<Double> numerosLeidos){
